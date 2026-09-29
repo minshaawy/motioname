@@ -15,7 +15,7 @@ An illustrated Arabic/English reference for everything you need before animating
 2. Settings → Pages → Source: **Deploy from a branch** → Branch: `main` / `(root)` → Save.
 3. الموقع يظهر بعد دقيقة أو اثنتين على `https://USERNAME.github.io/REPO/`.
 
-## الدومين: motioneffectname.com
+## الدومين: motioname.com
 ملف `CNAME` في الريبو فيه الدومين. في لوحة DNS عند مزوّد الدومين أضف:
 
 | Type | Name | Value |
@@ -30,4 +30,4 @@ An illustrated Arabic/English reference for everything you need before animating
 | AAAA | @ | 2606:50c0:8003::153 |
 | CNAME | www | USERNAME.github.io |
 
-ثم Settings → Pages → Custom domain → `motioneffectname.com` → Save، وبعد ما يتفعل الـ DNS فعّل **Enforce HTTPS**.
+ثم Settings → Pages → Custom domain → `motioname.com` → Save، وبعد ما يتفعل الـ DNS فعّل **Enforce HTTPS**.
