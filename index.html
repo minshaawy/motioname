@@ -1313,6 +1313,15 @@ footer .contact{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100
 footer .contact a{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--accent);text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
 footer .contact a:hover{border-color:var(--accent)}
 footer .contact svg{width:15px;height:15px;fill:currentColor}
+
+.bar .tabs2 a.hl{background:color-mix(in srgb,var(--key) 18%,transparent);color:var(--ink);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--key) 55%,transparent);margin-inline-start:4px}
+.bar .tabs2 a.hl::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--key);align-self:center;animation:hlp 1.8s ease-in-out infinite}
+.bar .tabs2 a.hl:hover{background:color-mix(in srgb,var(--key) 28%,transparent)}
+.bar .tabs2 a.hl.act{background:var(--key);color:#1a1205;box-shadow:none}
+.bar .tabs2 a.hl.act::before{background:#1a1205;animation:none}
+.bar .tabs2 a.hl b{color:inherit;opacity:.7}
+@keyframes hlp{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.5}}
+body.still .bar .tabs2 a.hl::before{animation:none}
 </style>
 
 </head>
@@ -1327,7 +1336,7 @@ footer .contact svg{width:15px;height:15px;fill:currentColor}
       <button id="pause" class="btn-ghost" type="button" aria-pressed="false"></button>
     </div>
   </div>
-  <header class="hero" id="hero" data-tab="generate"></header>
+  <header class="hero" id="hero" data-tab="interface"></header>
   <div id="tabhead"></div>
   <nav id="subnav" class="subnav" aria-label="Sections"></nav>
   <div id="start-w" data-tab="generate"></div>
@@ -1776,24 +1785,24 @@ const GLOSS=[
 
 /* ---------- tabs ---------- */
 const TABS=[
- {id:'generate',ar:'التوليد',en:'Generate',secs:['start','compose','setup','fix'],d:['ابدأ من هنا: طريقة العمل، ومُركّب البرومبت، وإعدادات أدوات التوليد، وحلول المشاكل الشائعة.','Start here: the workflow, the prompt builder, generation settings, and fixes for common problems.']},
- {id:'video',ar:'الفيديو',en:'Video',secs:['camera','shots','subject','light','time','cuts'],d:['لغة الفيديو التي تكتبها في البرومبت: حركات الكاميرا، واللقطات والزوايا والتكوين، وحركة الموضوع والبيئة، والإضاءة، والسرعة والعدسة، والانتقالات.','The film language you write into prompts: camera moves, shots, angles and composition, subject and ambient motion, lighting, speed and lens, and transitions.']},
  {id:'interface',ar:'موشن UI',en:'UI Motion',secs:['ui'],d:['الحركة داخل الواجهات: منحنيات التسارع، والتفاعلات الدقيقة، والتنقل بين الشاشات، والتحميل، والتمرير، والإيماءات.','Motion inside interfaces: easing curves, micro-interactions, navigation, loading, scroll and gestures.']},
  {id:'motion',ar:'موشن جرافيك',en:'Motion Graphics',secs:['mograph'],d:['مبادئ التحريك الاثنا عشر، وتحريك النصوص، والأشكال والمسارات، والمؤثرات.','The 12 principles of animation, type in motion, shapes and paths, and effects.']},
+ {id:'video',ar:'الفيديو',en:'Video',secs:['camera','shots','subject','light','time','cuts'],d:['لغة الفيديو التي تكتبها في البرومبت: حركات الكاميرا، واللقطات والزوايا والتكوين، وحركة الموضوع والبيئة، والإضاءة، والسرعة والعدسة، والانتقالات.','The film language you write into prompts: camera moves, shots, angles and composition, subject and ambient motion, lighting, speed and lens, and transitions.']},
  {id:'terms',ar:'المصطلحات',en:'Glossary',secs:['glossary'],d:['المصطلحات التي ستقابلها في برامج التحريك وأدوات الذكاء الاصطناعي.','Terms you will meet in animation software and AI tools.']},
+ {id:'generate',ar:'كيف تبدأ',en:'How to Start',secs:['start','compose','setup','fix'],d:['خطوات العمل مع أدوات الفيديو بالذكاء الاصطناعي من الفكرة للمونتاج، ومُركّب البرومبت، وإعدادات التوليد، وحلول المشاكل الشائعة.','How to work with AI video tools from idea to edit, plus the prompt builder, generation settings, and fixes for common problems.']},
 ];
 const TABOF={};TABS.forEach(tb=>tb.secs.forEach(x=>TABOF[x]=tb.id));
-let CUR='generate';
+let CUR=TABS[0].id;
 {const h=location.hash.slice(1);if(TABS.some(tb=>tb.id===h))CUR=h;else if(TABOF[h])CUR=TABOF[h];}
 function tabCount(tb){if(tb.id==='terms')return GLOSS.length;return SEC.filter(s=>tb.secs.includes(s.id)).reduce((a,s)=>a+s.count,0)}
 function renderTabs(){
-  document.getElementById('nav').innerHTML=TABS.map(tb=>`<a href="#${tb.id}" data-go="${tb.id}" class="${tb.id===CUR?'act':''}">${t(tb.ar,tb.en)}<b>${tabCount(tb)}</b></a>`).join('');
+  document.getElementById('nav').innerHTML=TABS.map(tb=>`<a href="#${tb.id}" data-go="${tb.id}" class="${tb.id===CUR?'act':''} ${tb.id==='generate'?'hl':''}">${t(tb.ar,tb.en)}<b>${tabCount(tb)}</b></a>`).join('');
   const tb=TABS.find(x=>x.id===CUR);
   const one=tb.secs.length===1?SEC.find(x=>x.id===tb.secs[0]):null;
   const desc=one?t(one.intro[0],one.intro[1]):t(tb.d[0],tb.d[1]);
   const tools=one?`<div class="toolsline mono" style="font-size:12px;color:var(--ink-3);direction:ltr;text-align:${t('right','left')}">${one.tools}</div>`:'';
   const cnt=`<div class="mono" style="font-size:12px;color:var(--ink-3)">${tabCount(tb)} ${S_('terms')}</div>`;
-  document.getElementById('tabhead').innerHTML=CUR==='generate'?'':`<div class="tabhead"><div class="eyebrow">${tb.en}</div><h1>${t(tb.ar,tb.en)}</h1><p>${desc}</p>${tools}${cnt}</div>`;
+  document.getElementById('tabhead').innerHTML=`<div class="tabhead"><div class="eyebrow">${tb.en}</div><h1>${t(tb.ar,tb.en)}</h1><p>${desc}</p>${tools}${cnt}</div>`;
   let links=[];
   if(CUR==='generate')links=[['start',S_('start')],['compose',S_('prompt')],...SEC.filter(s=>tb.secs.includes(s.id)).map(s=>[s.id,t(s.nav[0],s.nav[1]),s.count])];
   else if(tb.secs.length>1)links=SEC.filter(s=>tb.secs.includes(s.id)).map(s=>[s.id,t(s.nav[0],s.nav[1]),s.count]);
@@ -1818,7 +1827,7 @@ document.addEventListener('click',e=>{
   const a=e.target.closest('[data-go]');if(a){e.preventDefault();const q=document.getElementById('q');if(q.value){q.value='';filter('')}showTab(a.dataset.go);return}
   const l=e.target.closest('.subnav a');if(l){e.preventDefault();const el=document.getElementById(l.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 });
-document.getElementById('brand').addEventListener('click',()=>showTab('generate'));
+document.getElementById('brand').addEventListener('click',()=>showTab(TABS[0].id));
 
 /* ---------- chrome strings ---------- */
 const STR={
@@ -1826,7 +1835,7 @@ const STR={
  pause:['إيقاف الحركة','Pause motion'],play:['تشغيل الحركة','Play motion'],langBtn:['English','العربية'],
  copy:['نسخ','Copy'],copied:['تم النسخ','Copied'],terms:['مصطلح','terms'],fix:['الحل','FIX'],
  none:['لا توجد نتائج. جرّب اسمًا آخر بالعربية أو الإنجليزية.','No results. Try another name in English or Arabic.'],
- prompt:['البرومبت','Prompt'],start:['ابدأ هنا','Start here'],gloss:['المصطلحات','Glossary'],
+ prompt:['البرومبت','Prompt'],start:['خطوات العمل','Workflow'],gloss:['المصطلحات','Glossary'],
 };
 const S_=k=>t(STR[k][0],STR[k][1]);
 
@@ -1869,7 +1878,7 @@ function startHTML(){
   ];
   const voc=[['slowly','ببطء','sl'],['gently','بلطف','sl'],['subtly','بخفة','sl'],['gradually','تدريجيًا','sl'],['smoothly','بنعومة','sl'],['steadily','بثبات','sl'],['barely','بالكاد','sl'],['continuously','باستمرار',''],['quickly','بسرعة','fs'],['suddenly','فجأة','fs'],['rapidly','بسرعة كبيرة','fs'],['dramatically','بشكل درامي','fs']];
   const leg=[['p1',t('حجم اللقطة','Shot'),'var(--accent)'],['p2',t('الزاوية','Angle'),'var(--accent)'],['p3',t('الموضوع','Subject'),'var(--key)'],['p4',t('حركة الموضوع','Subject motion'),'var(--ok)'],['p5',t('حركة الكاميرا','Camera move'),'var(--heart)'],['p6',t('الإضاءة والجو','Light & atmosphere'),'var(--key)'],['p7',t('العدسة','Lens'),'var(--ink-3)'],['p8',t('الأسلوب','Style'),'var(--ok)']];
-  return `<section class="sec" id="start"><div class="sec-head"><div><div class="en">Start here</div><h2>${t('قبل ما تبدأ','Before you animate')}</h2></div><div class="mono" style="font-size:12px;color:var(--ink-3)">8 ${t('خطوات','steps')}</div><p>${t('الطريقة التي يعمل بها المحترفون مع أدوات الفيديو بالذكاء الاصطناعي، من الفكرة حتى المونتاج. كل خطوة مرتبطة بقسم في القاموس.','How professionals work with AI video tools, from idea to edit. Each step links to a section of the lexicon.')}</p></div>
+  return `<section class="sec" id="start"><div class="sec-head"><div><div class="en">Workflow</div><h2>${t('خطوات العمل','The workflow')}</h2></div><div class="mono" style="font-size:12px;color:var(--ink-3)">8 ${t('خطوات','steps')}</div><p>${t('الطريقة التي يعمل بها المحترفون مع أدوات الفيديو بالذكاء الاصطناعي، من الفكرة حتى المونتاج. كل خطوة مرتبطة بقسم في القاموس.','How professionals work with AI video tools, from idea to edit. Each step links to a section of the lexicon.')}</p></div>
   <ol class="pipe">${steps.map(s=>`<li><h4>${s[0]}</h4><p>${s[1]}</p><div class="k2">${s[2].map(x=>`<span>${x}</span>`).join('')}</div></li>`).join('')}</ol>
   <div class="twocol"><div class="panel"><h3>${t('تشريح البرومبت','Anatomy of a prompt')}</h3><p>${t('برومبت واحد مقسّم إلى أجزائه. رتّبها بهذا الشكل تقريبًا، واجعل كل جزء واضحًا.','One prompt split into its parts. Keep roughly this order and make each part explicit.')}</p>
    <div class="anat"><span class="p1">Medium shot</span>, <span class="p2">low angle</span> of <span class="p3">a woman in a red coat on a windy hill</span>. <span class="p4">She slowly turns her head toward the camera as her hair blows in the wind.</span> <span class="p5">Camera: slow dolly in.</span> <span class="p6">Golden hour backlight, dust in the air.</span> <span class="p7">Shallow depth of field.</span> <span class="p8">Cinematic, 35mm film.</span></div>
